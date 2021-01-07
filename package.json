@@ -1,6 +1,6 @@
 {
   "name": "vue-page-free-build",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "页面编辑器，可以自定义注册组件。然后通过拖拽移动，缩放，自由修改样式，数据，事件，以及其他数据，生成一个自定义的页面。然后获取对应的json数据。",
   "main": "index.js",
   "scripts": {
