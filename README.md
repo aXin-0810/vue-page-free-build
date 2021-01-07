@@ -14,7 +14,7 @@
   
   * demo项目地址：******
   
-  ![avatar](http://www.mml-kj.com/npmImg/WechatIMG203.png)
+  ![demo图片](https://github.com/aXin-0810/vue-page-free-build/blob/master/WechatIMG203.jpg)
 
 ## 第一步 安装依赖
 ```javascript
