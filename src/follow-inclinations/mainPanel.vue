@@ -13,7 +13,9 @@
         }]"
         :class="{
           basisStyle: true,
-          currentBorder:(currentId===item.id)
+          [currentStyle]:(currentId===item.id),
+          [sameGroupStyle]:(currentId!==item.id && ~currentGroupMembers.indexOf(item.id)),
+          [haveBeenGrouped]:(groupState&&item.groupMember&&((temporaryGroup && temporaryGroup.groupId) ? item.groupId!==temporaryGroup.groupId : true))
         }" @click.stop="setCurrentControl(item.id)">
         <template v-if="item.positioning&&item.freeStyle.height&&item.freeStyle.width">
           <div :ref="'topRightAngle_'+item.id" class="topRightAngle"></div>
@@ -38,7 +40,23 @@
 
 <script>
 export default {
-  props:["controlPanel"],
+  props:{
+    controlPanel:{
+      type:null
+    },
+    currentStyle:{
+      type:String,
+      default:"currentBorder"
+    },
+    sameGroupStyle:{
+      type:String,
+      default:"sameGroup"
+    },
+    haveBeenGrouped:{
+      type:String,
+      default:"groupMember"
+    },
+  },
   data() {
     return {
       id:"mainPanel",
@@ -48,10 +66,16 @@ export default {
         height: '812px',
         background: '',
       },
-      // 当前选中id
-      currentId:"",
+      // 接收当前是否设置分组
+      groupState:false,
       // 存放组件列表
       componentList:[],
+      // 分组集合
+      temporaryGroup:{},
+      // 存放当前操作组件所属分组的成员
+      currentGroupMembers:[],
+      // 当前选中id
+      currentId:"",
       // 当前内容高度
       scrollHeight:812,
       // 当前滚动高度
@@ -70,6 +94,15 @@ export default {
         this.currentId = data.id;
       }else{
         this.currentId = "";
+      };
+    });
+    // 监听当前选中是否为分组
+    this.controlPanel.listeningGroupChange((data,list,temporary)=>{
+      this.temporaryGroup = (temporary||{});
+      if(data && data.gather){
+        this.currentGroupMembers = Object.keys(data.gather);
+      }else{
+        this.currentGroupMembers = [];
       };
     });
   },
@@ -111,10 +144,19 @@ export default {
 }
 .currentBorder{
   box-sizing: border-box;
-  -moz-box-shadow:0px 0px 8px #000; 
-  -webkit-box-shadow:0px 0px 8px #000; 
-  box-shadow:0px 0px 8px #000;
+  -moz-box-shadow:0px 0px 8px #05d2f4; 
+  -webkit-box-shadow:0px 0px 8px #05d2f4; 
+  box-shadow:0px 0px 8px #05d2f4;
 };
+.sameGroup{
+  box-sizing: border-box;
+  -moz-box-shadow:0px 0px 8px #bce6f3; 
+  -webkit-box-shadow:0px 0px 8px #bce6f3; 
+  box-shadow:0px 0px 8px #bce6f3;
+};
+.groupMember{
+  opacity: .3;
+}
 .topRightAngle {
   width: 6px;
   height: 6px;
