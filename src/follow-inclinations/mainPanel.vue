@@ -99,10 +99,24 @@ export default {
     // 监听当前选中是否为分组
     this.controlPanel.listeningGroupChange((data,list,temporary)=>{
       this.temporaryGroup = (temporary||{});
-      if(data && data.gather){
-        this.currentGroupMembers = Object.keys(data.gather);
-      }else{
-        this.currentGroupMembers = [];
+      this.currentGroupMembers = [];
+      try {
+        Object.keys(list).forEach((key)=>{
+          var gather_ = Object.keys(list[key]['gather']);
+          if(~gather_.indexOf(this.currentId)){
+            this.currentGroupMembers = gather_;
+            throw new Error(true);
+          };
+        });
+      } catch (e) {
+        if (!(e.message === 'true' || e.message === true)) {
+          console.error(e);
+        }else{
+          return;
+        }
+      };
+      if(temporary && temporary.gather){
+        this.currentGroupMembers = Object.keys(temporary.gather);
       };
     });
   },
@@ -121,7 +135,7 @@ export default {
 <style lang="scss" scope>
 #mainPanelPage{
   box-sizing: border-box;
-  background: #eee;
+  background: #f6f6f6;
   overflow-y: auto;
   overflow-x: hidden;
   position: relative;
@@ -141,6 +155,7 @@ export default {
 }
 .basisStyle{
   display: inline-block;
+  -webkit-user-select: none;
 }
 .currentBorder{
   box-sizing: border-box;
@@ -150,9 +165,9 @@ export default {
 };
 .sameGroup{
   box-sizing: border-box;
-  -moz-box-shadow:0px 0px 8px #bce6f3; 
-  -webkit-box-shadow:0px 0px 8px #bce6f3; 
-  box-shadow:0px 0px 8px #bce6f3;
+  -moz-box-shadow:0px 0px 8px #9ce6f3; 
+  -webkit-box-shadow:0px 0px 8px #9ce6f3; 
+  box-shadow:0px 0px 8px #9ce6f3;
 };
 .groupMember{
   opacity: .3;
