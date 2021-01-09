@@ -58,87 +58,43 @@ export const controlPanel = new free.controlFreePanel(freePanel.freeTransit);
 ```
 
 ## freePanel构造组件
-* 获取方法 
 
 ```javascript
-
 freePanel.component
-
 ```
 
 ## controlPanel构造函数方法列表
 
-| 方法                              | 参数                                        | 方法名字                                           |
-| ----------------------------------- | --------------------------------------------- | ------------------------------------------------------ |
-| controlPanel.addComponent           | name/组件名字，bool/默认false(true为绝对定位) | 添加指定组件                                     |
-| controlPanel.removeComponent        | 默认删除当前选中，id/组件id        | 删除指定组件                                     |
-| controlPanel.setStyle               | key/修改的字段，value/修改值         | 修改选中组件的样式                            |
-| controlPanel.setData                | key/修改的字段，value/修改值         | 修改选中组件的数据                            |
-| controlPanel.setPositioning         | key/修改的字段，value/修改值         | 绝对定位的组件修改定位位置，也可以通过拖拽移动，和缩放 |
-| controlPanel.setConfig              | key/修改的字段，value/修改值         | 设置更多配置数据                               |
-| controlPanel.setCurrentControl      | id/组件id                                   | 点击组件时设置当前可以操控的组件       |
-| controlPanel.listeningCurrentSwitch | callback/回调函数                         | 监听当前操作组件切换变化                   |
-| controlPanel.listeningCurrentChange | callback/回调函数                         | 监听当前操作记录                   |
-| controlPanel.rollBack               | 无                                           | 返回上一步操作                                  |
-| controlPanel.nextStep               | 无                                           | 前进一步操作                                     |
-| controlPanel.echoComponent          | list/列表数据                             | 回显页面                                           |
-| controlPanel.resetFreePanel         | bool/默认false，true深度重置会注销监听事件 | 重置面板构造器                                  |
-| controlPanel.savePhaseData          | 无                                           | 保存当前进度操作页面数据                   |
+| 基础方法                              | 参数                                        | 方法名字                                           |
+| ---------------------------------- | -------------------------------------- | ---------------------------------------------- |
+| controlPanel.addComponent | name/组件名字，bool/默认false(true为绝对定位) | 添加指定组件 |
+| controlPanel.removeComponent | 默认删除当前选中，id/组件id | 删除指定组件  |
+| controlPanel.setStyle | key/修改的字段，value/修改值 | 修改选中组件的样式 |
+| controlPanel.setData | key/修改的字段，value/修改值 | 修改选中组件的数据 |
+| controlPanel.setPositioning| key/修改的字段，value/修改值 | 绝对定位的组件修改定位位置，也可以通过拖拽移动，和缩放 |
+| controlPanel.setConfig | key/修改的字段，value/修改值 | 设置更多配置数据 |
+| controlPanel.setCurrentControl | id/组件id | 点击组件时设置当前可以操控的组件 |
+| controlPanel.listeningCurrentSwitch | callback/回调函数 | 监听当前操作组件切换变化 |
+| controlPanel.listeningCurrentChange | callback/回调函数 | 监听当前操作记录|
+| controlPanel.rollBack | 无 | 返回上一步操作 |
+| controlPanel.nextStep | 无 | 前进一步操作|
+| controlPanel.echoComponent | list/列表数据  | 回显页面 |
+| controlPanel.resetFreePanel | bool/默认false，true深度重置会注销监听事件 | 重置面板构造器 |
+| controlPanel.savePhaseData | 无 | 保存当前进度操作页面数据 |
 
-```javascript
 
-// 添加组件
-controlPanel.addComponent("textVue"); //顺排
-controlPanel.addComponent("textVue",true); //绝对定位
+| 分组功能                              | 参数                                        | 方法名字                                           |
+| ----------------------------------- | ------------------------------------- | --------------------------------------------- |
+| controlPanel.createGroup|无 |创建分组|
+| controlPanel.delGroup|groupId/组id|删除分组|
+| controlPanel.determineGroup|无|在开启设置分组时，确定当前分组成员的修改|
+| controlPanel.getGroup|groupId/组id|过去分组数据|
+| controlPanel.listeningGroupChange|callback/回调函数|监听分组数据的变化|
+| controlPanel.setGroup|groupId/组id|开启修改分组成员|
+| controlPanel.setGroupMemberName|groupId/组id，label/名字|设置分组名字|
+| controlPanel.setGroupName|groupId/组id，id/组件id，label/名字|设置组件名字|
 
-// 删除组件
-controlPanel.removeComponent(id);
 
-// 设置当前选中样式
-controlPanel.setStyle("width","100px");
-
-// 设置当前选中数据
-controlPanel.setData("text","新数据");
-
-// 设置定位
-controlPanel.setPositioning("left","100px");
-
-// 设置更多自定义配置
-controlPanel.setConfig("animation","type");
-
-// 设置当前选中
-controlPanel.setCurrentControl(id);
-
-// 监听当前操作组件切换变化
-controlPanel.listeningCurrentSwitch((data)=>{
-  //data为选中组件实例
-});
-
-// 监听当前操作记录
-controlPanel.listeningCurrentChange((newData,index,list)=>{
-  // newData最新操作
-  // index第几步
-  // list操作记录列表
-});
-
-// 回滚上一步
-controlPanel.rollBack();
-
-// 前进一步
-controlPanel.nextStep();
-
-// 回显,数组来源于保存的数据
-controlPanel.echoComponent([]);
-
-// 重置面板（在面板组件将要销毁时执行）
-controlPanel.resetFreePanel();
-
-//保存当前步骤数据（会清空操作记录）
-var saveList = controlPanel.savePhaseData();
-
-// saveList为当前页面的数据
-
-```
 ## 第三步 在vue中引用控办组件
 ```javascript
 
