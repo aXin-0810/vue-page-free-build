@@ -87,10 +87,10 @@ freePanel.component
 | ----------------------------------- | ------------------------------------- | --------------------------------------------- |
 | controlPanel.createGroup|无 |创建分组|
 | controlPanel.delGroup|groupId/组id|删除分组|
-| controlPanel.determineGroup|无|在开启设置分组时，确定当前分组成员的修改|
-| controlPanel.getGroup|groupId/组id|过去分组数据|
-| controlPanel.listeningGroupChange|callback/回调函数|监听分组数据的变化|
 | controlPanel.setGroup|groupId/组id|开启修改分组成员|
+| controlPanel.determineGroup|无|在开启设置分组后，确定当前分组成员的修改|
+| controlPanel.getGroup|groupId/组id|获取分组数据|
+| controlPanel.listeningGroupChange|callback/回调函数|监听分组数据的变化|
 | controlPanel.setGroupMemberName|groupId/组id，label/名字|设置分组名字|
 | controlPanel.setGroupName|groupId/组id，id/组件id，label/名字|设置组件名字|
 
