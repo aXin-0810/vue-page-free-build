@@ -16,7 +16,9 @@
           [currentStyle]:(currentId===item.id),
           [sameGroupStyle]:(currentId!==item.id && ~currentGroupMembers.indexOf(item.id)),
           [haveBeenGrouped]:(groupState&&item.groupMember&&((temporaryGroup && temporaryGroup.groupId) ? item.groupId!==temporaryGroup.groupId : true))
-        }" @click.stop="setCurrentControl(item.id)">
+        }" 
+        @click.stop="clickEvent(item)"
+        @dblclick.stop="dblclickEvent(item)">
         <template v-if="item.positioning&&item.freeStyle.height&&item.freeStyle.width">
           <div :ref="'topRightAngle_'+item.id" class="topRightAngle"></div>
           <div :ref="'topLeftAngle_'+item.id" class="topLeftAngle"></div>
@@ -66,6 +68,11 @@ export default {
         height: '812px',
         background: '',
       },
+      // 页面事件集合
+      eventGather:{
+        touchGround:`((...paramet)=>{ })`,
+        touchPeak:`((...paramet)=>{ })`,
+      },
       // 接收当前是否设置分组
       groupState:false,
       // 存放组件列表
@@ -85,6 +92,19 @@ export default {
   watch:{
     "freeStyle.height"(newV){
       this.scrollHeight = (Number(newV.replace(/px/, ''))+this.scrollTop);
+    },
+    scrollTop(newV){
+      if(newV==0){
+        if(this.eventGather["touchPeak"]){
+          eval(this.eventGather["touchPeak"]+`()`);
+        };
+      }else{
+        if( (Number(this.freeStyle.height.replace(/px/,''))+newV) == this.scrollHeight ){
+          if(this.eventGather["touchGround"]){
+            eval(this.eventGather["touchGround"]+`()`);
+          };
+        };
+      };
     }
   },
   created(){
@@ -127,6 +147,33 @@ export default {
     scrollHandle(e){
       this.scrollTop = e.target.scrollTop;
       this.scrollHeight = e.target.scrollHeight;
+    },
+    clickEvent(item){
+      this.setCurrentControl(item.id);
+      if(item.bindEvent && item.bindEvent.click){
+        if(item.eventGather[item.bindEvent.functionName]){
+          eval(item.eventGather[item.bindEvent.functionName]+`(${
+            (item.bindEvent.paramet instanceof Array)?item.bindEvent.paramet.join(','):item.bindEvent.paramet
+          })`);
+        }else if(this.eventGather[item.bindEvent.functionName]){
+          eval(this.eventGather[item.bindEvent.functionName]+`(${
+            (item.bindEvent.paramet instanceof Array)?item.bindEvent.paramet.join(','):item.bindEvent.paramet
+          })`);
+        };
+      };
+    },
+    dblclickEvent(item){
+      if(item.bindEvent && item.bindEvent.dblclick){
+        if(item.eventGather[item.bindEvent.functionName]){
+          eval(item.eventGather[item.bindEvent.functionName]+`(${
+            (item.bindEvent.paramet instanceof Array)?item.bindEvent.paramet.join(','):item.bindEvent.paramet
+          })`);
+        }else if(this.eventGather[item.bindEvent.functionName]){
+          eval(this.eventGather[item.bindEvent.functionName]+`(${
+            (item.bindEvent.paramet instanceof Array)?item.bindEvent.paramet.join(','):item.bindEvent.paramet
+          })`);
+        };
+      };
     }
   }
 };
