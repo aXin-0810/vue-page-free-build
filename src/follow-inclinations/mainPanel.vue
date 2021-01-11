@@ -83,11 +83,11 @@ export default {
       eventGather: {
         touchPeak:{
           name:"页面滑动顶部",
-          fun:`((...paramet)=>{ })`
+          fun:escape(`((...paramet)=>{ })`)
         },
         touchGround:{
           name:"页面滑动底部",
-          fun:`((...paramet)=>{ })`
+          fun:escape(`((...paramet)=>{ })`)
         },
         
       },
@@ -114,7 +114,7 @@ export default {
     scrollTop(newV) {
       if (newV == 0) {
         if (this.eventGather["touchPeak"]) {
-          eval(this.eventGather["touchPeak"]['fun'])();
+          eval(unescape(this.eventGather["touchPeak"]['fun']))();
         }
       } else {
         if (
@@ -122,7 +122,7 @@ export default {
           this.scrollHeight
         ) {
           if (this.eventGather["touchGround"]) {
-            eval(this.eventGather["touchGround"]['fun'])();
+            eval(unescape(this.eventGather["touchGround"]['fun']))();
           }
         }
       }
@@ -177,10 +177,10 @@ export default {
           if (item.bindEvent && item.bindEvent.click) {
             var e = item.bindEvent.click;
             if (item.eventGather[e.funcId]) {
-              var func = eval(item.eventGather[e.funcId]['fun']);
+              var func = eval(unescape(item.eventGather[e.funcId]['fun']));
               func.call(this.controlPanel.useThis(item.id),...(e.paramet instanceof Array ? e.paramet : [e.paramet]));
             } else if (this.eventGather[e.funcId]) {
-              var func = eval(this.eventGather[e.funcId]['fun']);
+              var func = eval(unescape(this.eventGather[e.funcId]['fun']));
               func.call(this.controlPanel.useThis(item.id),...(e.paramet instanceof Array ? e.paramet : [e.paramet]));
             }
           };
@@ -192,10 +192,10 @@ export default {
       if (item.bindEvent && item.bindEvent.dblclick) {
         var e = item.bindEvent.dblclick;
         if (item.eventGather[e.funcId]) {
-          var func = eval(item.eventGather[e.funcId]['fun']);
+          var func = eval(unescape(item.eventGather[e.funcId]['fun']));
           func.call(this.controlPanel.useThis(item.id),...(e.paramet instanceof Array ? e.paramet : [e.paramet]));
         } else if (this.eventGather[e.funcId]) {
-          var func = eval(this.eventGather[e.funcId]['fun']);
+          var func = eval(unescape(this.eventGather[e.funcId]['fun']));
           func.call(this.controlPanel.useThis(item.id),...(e.paramet instanceof Array ? e.paramet : [e.paramet]));
         }
       }
