@@ -95,6 +95,19 @@ freePanel.component
 | controlPanel.setGroupName|groupId/组id，id/组件id，label/名字|设置组件名字|
 
 
+| 事件功能                              | 参数                                        | 方法名字                                           |
+| ----------------------------------- | ------------------------------------- | --------------------------------------------- |
+| controlPanel.addPageEvent|functionName/方法名称， functionStr/方法函数转换字符串为参数 |添加页面事件功能，所有组件可以使用 |
+| controlPanel.upPageEvent|funcId/方法id， options.functionName/options.functionStr|修改页面事件功能|
+| controlPanel.removePageEvent|funcId/方法id|删除页面事件功能|
+| controlPanel.addComponentEvent|functionName/方法名称， functionStr/方法函数转换字符串为参数 |添加组件事件功能，只有该组件能使用 |
+| controlPanel.upComponentEvent|funcId/方法id， options.functionName/options.functionStr|修改组件事件功能|
+| controlPanel.removeComponentEvent|funcId/方法id|删除组件事件功能|
+| controlPanel.bindComponentEvent|way/事件类型， funcId/方法id， paramet/携带参数|给当前选中组件绑定事件函数 |
+| controlPanel.removeBindComponentEvent|way/事件类型|给当前选中组件解除绑定事件|
+| controlPanel.listeningEventChange|callback/回调函数|监听事件函数的变化，与绑定事件的变化|
+
+
 ## 第三步 在vue中引用控办组件
 ```javascript
 
