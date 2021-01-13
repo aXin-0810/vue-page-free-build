@@ -1,7 +1,9 @@
 <template>
   <div
     id="mainPanelPage"
-    :style="[freeStyle]"
+    :style="[freeStyle,{
+      transform:'scale('+zoomValue+')'
+    }]"
     @click.stop="setCurrentControl('mainPanel')"
     @scroll="scrollHandle">
     <template v-for="item in componentList">
@@ -105,6 +107,8 @@ export default {
       scrollHeight: 812,
       // 当前滚动高度
       scrollTop: 0,
+      // 面板缩放值
+      zoomValue:1
     };
   },
   watch: {
@@ -160,6 +164,13 @@ export default {
         this.currentGroupMembers = Object.keys(temporary.gather);
       }
     });
+    // 监听缩放比例
+    this.controlPanel.listeningZoomChange((zoomValue)=>{
+      this.zoomValue = zoomValue;
+    });
+  },
+  beforeDestroy() {
+    this.controlPanel.resetFreePanel(true);
   },
   methods: {
     setCurrentControl(id) {
