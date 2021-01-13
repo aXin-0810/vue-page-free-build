@@ -14,7 +14,7 @@
   
   * demo项目地址：www.mml-kj.com/free/
   
-  ![demo图片](https://github.com/aXin-0810/vue-page-free-build/blob/master/1610013227657.jpg)
+  ![demo图片](https://github.com/aXin-0810/vue-page-free-build/blob/master/16100132276571.jpg)
 
   ![demo图片](https://github.com/aXin-0810/vue-page-free-build/blob/master/16100132276573.jpg)
 
