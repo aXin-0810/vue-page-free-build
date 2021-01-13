@@ -11,22 +11,14 @@
         :ref="item.id"
         :key="item.id"
         :style="[
-          item.positioning || {},
-          {
-            cursor: item.positioning ? 'move' : 'default',
-          },
+          (item.positioning || {}),
+          ({cursor: item.positioning ? 'move' : 'default'}),
         ]"
         :class="{
           basisStyle: true,
           [currentStyle]: currentId === item.id,
-          [sameGroupStyle]:
-            currentId !== item.id && ~currentGroupMembers.indexOf(item.id),
-          [haveBeenGrouped]:
-            groupState &&
-            item.groupMember &&
-            (temporaryGroup && temporaryGroup.groupId
-              ? item.groupId !== temporaryGroup.groupId
-              : true),
+          [sameGroupStyle]: currentId !== item.id && ~currentGroupMembers.indexOf(item.id),
+          [haveBeenGrouped]: groupState && item.groupMember && ((temporaryGroup && temporaryGroup.groupId) ? item.groupId !== temporaryGroup.groupId : true)
         }"
         @click.stop="clickEvent(item)"
         @dblclick.stop="dblclickEvent(item)">
