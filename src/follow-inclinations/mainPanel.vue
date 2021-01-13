@@ -247,40 +247,30 @@ export default {
 .groupMember {
   opacity: 0.3;
 }
-.topRightAngle {
-  width: 6px;
-  height: 6px;
-  position: absolute;
-  top: -3px;
-  right: -3px;
-  z-index: 10002;
-  cursor: crosshair;
-}
-.topLeftAngle {
-  width: 6px;
-  height: 6px;
-  position: absolute;
-  top: -3px;
-  left: -3px;
-  z-index: 10002;
-  cursor: crosshair;
-}
-.bottomRightAngle {
-  width: 6px;
-  height: 6px;
-  position: absolute;
-  bottom: -3px;
-  right: -3px;
-  z-index: 10002;
-  cursor: crosshair;
-}
+.topRightAngle ,
+.topLeftAngle ,
+.bottomRightAngle ,
 .bottomLeftAngle {
   width: 6px;
   height: 6px;
   position: absolute;
-  bottom: -3px;
-  left: -3px;
   z-index: 10002;
   cursor: crosshair;
+}
+.topRightAngle {
+  top: -3px;
+  right: -3px;
+}
+.topLeftAngle {
+  top: -3px;
+  left: -3px;
+}
+.bottomRightAngle {
+  bottom: -3px;
+  right: -3px;
+}
+.bottomLeftAngle {
+  bottom: -3px;
+  left: -3px;
 }
 </style>
