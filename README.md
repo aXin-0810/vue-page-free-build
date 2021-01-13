@@ -16,6 +16,8 @@
   
   ![demo图片](https://github.com/aXin-0810/vue-page-free-build/blob/master/1610013227657.jpg)
 
+  ![demo图片](https://github.com/aXin-0810/vue-page-free-build/blob/master/16100132276573.jpg)
+
 ## 第一步 安装依赖
 ```javascript
 
@@ -74,8 +76,10 @@ freePanel.component
 | controlPanel.setPositioning| key/修改的字段，value/修改值 | 绝对定位的组件修改定位位置，也可以通过拖拽移动，和缩放 |
 | controlPanel.setConfig | key/修改的字段，value/修改值 | 设置更多配置数据 |
 | controlPanel.setCurrentControl | id/组件id | 点击组件时设置当前可以操控的组件 |
+| controlPanel.setZoomValue | number/缩放值 | 设置当前面板缩放级别 |
 | controlPanel.listeningCurrentSwitch | callback/回调函数 | 监听当前操作组件切换变化 |
 | controlPanel.listeningCurrentChange | callback/回调函数 | 监听当前操作记录|
+| controlPanel.listeningZoomChange | callback/回调函数 | 监听面板缩放 |
 | controlPanel.rollBack | 无 | 返回上一步操作 |
 | controlPanel.nextStep | 无 | 前进一步操作|
 | controlPanel.echoComponent | list/列表数据  | 回显页面 |
