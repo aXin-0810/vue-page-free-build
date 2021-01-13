@@ -143,10 +143,6 @@ export default {
       // ......
     };
   },
-  beforeDestroy(){
-    // 页面销毁时重置构造器
-    controlPanel.resetFreePanel(true);
-  }
   // ......
 
 };
