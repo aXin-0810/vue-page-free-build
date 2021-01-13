@@ -118,7 +118,15 @@ freePanel.component
 <template>
   <div >
     <!-- :controlPanel="controlPanel" 必要操作，把控制器传给面板 -->
-    <freePanel :controlPanel="controlPanel"></freePanel>
+    <!-- currentStyle  修改当前点击选中组件的高亮样式-->
+    <!-- sameGroupStyle  修改当前点击选中组件的同组合组件高亮样式-->
+    <!-- haveBeenGrouped  修改选中同组合组件时不可选中的组件样式-->
+    <freePanel 
+      :controlPanel="controlPanel">
+      currentStyle=""
+      sameGroupStyle=""
+      haveBeenGrouped=""
+    </freePanel>
   </div>
 </template>
 
