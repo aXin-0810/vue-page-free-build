@@ -48,31 +48,31 @@
     <!-- 对齐线 -->
     <template v-if="currentIndex!==undefined && alignment">
       <div 
-        v-show="~alignment.page.cross.indexOf(alignmentLineTop)"
+        v-show="~alignment.page.cross.indexOf(Math.round(Number(componentList[currentIndex]['positioning']['top'].replace(/px/, ''))*zoomValue))"
         :class="{topAlignment:true,[alignmentLineStyle]:true,}" 
         :style="{
-          top:(alignmentLineTop+'px')
+          top:(Number(componentList[currentIndex]['positioning']['top'].replace(/px/, ''))+'px')
         }">
       </div>
       <div 
-        v-show="~alignment.page.cross.indexOf(alignmentLineBottom)"
+        v-show="~alignment.page.cross.indexOf(Math.round((Number(componentList[currentIndex]['positioning']['top'].replace(/px/, ''))+Number(componentList[currentIndex]['freeStyle']['height'].replace(/px/, '')))*zoomValue))"
         :class="{bottomAlignment:true,[alignmentLineStyle]:true,}"
         :style="{
-          top:(alignmentLineBottom+'px')
+          top:(Math.round(Number(componentList[currentIndex]['positioning']['top'].replace(/px/, ''))+Number(componentList[currentIndex]['freeStyle']['height'].replace(/px/, '')))+'px')
         }">
       </div>
       <div 
-        v-show="~alignment.page.longitudinal.indexOf(alignmentLineLeft)"
+        v-show="~alignment.page.longitudinal.indexOf(Math.round(Number(componentList[currentIndex]['positioning']['left'].replace(/px/, ''))*zoomValue))"
         :class="{leftAlignment:true,[alignmentLineStyle]:true,}"
         :style="{
-          left:(alignmentLineLeft+'px')
+          left:(Number(componentList[currentIndex]['positioning']['left'].replace(/px/, ''))+'px')
         }">
       </div>
       <div 
-        v-show="~alignment.page.longitudinal.indexOf(alignmentLineRight)"
+        v-show="~alignment.page.longitudinal.indexOf(Math.round((Number(componentList[currentIndex]['positioning']['left'].replace(/px/, ''))+Number(componentList[currentIndex]['freeStyle']['width'].replace(/px/, '')))*zoomValue))"
         :class="{rightAlignment:true,[alignmentLineStyle]:true,}"
         :style="{
-          left:(alignmentLineRight+'px')
+          left:(Math.round(Number(componentList[currentIndex]['positioning']['left'].replace(/px/, ''))+Number(componentList[currentIndex]['freeStyle']['width'].replace(/px/, '')))+'px')
         }">
       </div>
     </template>
@@ -154,20 +154,6 @@ export default {
           }
         }
       }
-    },
-  },
-  computed:{
-    alignmentLineTop(){
-      return Number(this.componentList[this.currentIndex]['positioning']['top'].replace(/px/, ''))
-    },
-    alignmentLineBottom(){
-      return (Number(this.componentList[this.currentIndex]['positioning']['top'].replace(/px/, ''))+Number(this.componentList[this.currentIndex]['freeStyle']['height'].replace(/px/, '')))
-    },
-    alignmentLineLeft(){
-      return Number(this.componentList[this.currentIndex]['positioning']['left'].replace(/px/, ''))
-    },
-    alignmentLineRight(){
-      return (Number(this.componentList[this.currentIndex]['positioning']['left'].replace(/px/, ''))+Number(this.componentList[this.currentIndex]['freeStyle']['width'].replace(/px/, '')))
     },
   },
   created() {
