@@ -51,14 +51,14 @@
         v-show="~alignment.page.cross.indexOf(Math.round(Number(componentList[currentIndex]['positioning']['top'].replace(/px/, ''))*zoomValue))"
         :class="{topAlignment:true,[alignmentLineStyle]:true,}" 
         :style="{
-          top:(Number(componentList[currentIndex]['positioning']['top'].replace(/px/, ''))+'px')
+          top:(Number(componentList[currentIndex]['positioning']['top'].replace(/px/, ''))-scrollTop+'px')
         }">
       </div>
       <div 
         v-show="~alignment.page.cross.indexOf(Math.round((Number(componentList[currentIndex]['positioning']['top'].replace(/px/, ''))+Number(componentList[currentIndex]['freeStyle']['height'].replace(/px/, '')))*zoomValue))"
         :class="{bottomAlignment:true,[alignmentLineStyle]:true,}"
         :style="{
-          top:(Math.round(Number(componentList[currentIndex]['positioning']['top'].replace(/px/, ''))+Number(componentList[currentIndex]['freeStyle']['height'].replace(/px/, '')))+'px')
+          top:(Math.round(Number(componentList[currentIndex]['positioning']['top'].replace(/px/, ''))+Number(componentList[currentIndex]['freeStyle']['height'].replace(/px/, ''))-scrollTop)+'px')
         }">
       </div>
       <div 
@@ -140,6 +140,7 @@ export default {
       this.scrollHeight = Number(newV.replace(/px/, "")) + this.scrollTop;
     },
     scrollTop(newV) {
+      console.log(this.eventObj.eventGather["mainPanel"]);
       if (newV == 0) {
         if (this.eventObj.eventGather["mainPanel"]["touchPeak"]) {
           eval(unescape(this.eventObj.eventGather["mainPanel"]["touchPeak"]['fun']))();
@@ -203,6 +204,7 @@ export default {
     });
     // 监听事件变化
     this.controlPanel.listeningEventChange((bindEvent,currentEventGather,combined,eventObj)=>{
+      console.log(eventObj);
       this.eventObj = eventObj;
     });
     // 监听缩放比例
