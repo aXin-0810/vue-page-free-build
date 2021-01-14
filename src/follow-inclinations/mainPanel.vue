@@ -1,10 +1,12 @@
 <template>
-  <div style="position: relative;">
+  <div :style="[{
+    position: 'relative',
+    display: 'inline-block',
+    transform:'scale('+zoomValue+')'
+  }]">
     <div
       id="mainPanelPage"
-      :style="[freeStyle,{
-        transform:'scale('+zoomValue+')'
-      }]"
+      :style="[freeStyle]"
       @click.stop="setCurrentControl('mainPanel')"
       @scroll="scrollHandle">
       <template v-for="item in componentList">
@@ -46,31 +48,31 @@
     <!-- 对齐线 -->
     <template v-if="currentIndex!==undefined && alignment">
       <div 
-        v-show="~alignment.page.cross.indexOf(Number(componentList[currentIndex]['positioning']['top'].replace(/px/, '')))"
+        v-show="~alignment.page.cross.indexOf(alignmentLineTop)"
         :class="{topAlignment:true,[alignmentLineStyle]:true,}" 
         :style="{
-          top:componentList[currentIndex]['positioning']['top']
+          top:(alignmentLineTop+'px')
         }">
       </div>
       <div 
-        v-show="~alignment.page.cross.indexOf((Number(componentList[currentIndex]['positioning']['top'].replace(/px/, ''))+Number(componentList[currentIndex]['freeStyle']['height'].replace(/px/, ''))))"
+        v-show="~alignment.page.cross.indexOf(alignmentLineBottom)"
         :class="{bottomAlignment:true,[alignmentLineStyle]:true,}"
         :style="{
-          top:(Number(componentList[currentIndex]['positioning']['top'].replace(/px/, ''))+Number(componentList[currentIndex]['freeStyle']['height'].replace(/px/, '')))+'px'
+          top:(alignmentLineBottom+'px')
         }">
       </div>
       <div 
-        v-show="~alignment.page.longitudinal.indexOf(Number(componentList[currentIndex]['positioning']['left'].replace(/px/, '')))"
+        v-show="~alignment.page.longitudinal.indexOf(alignmentLineLeft)"
         :class="{leftAlignment:true,[alignmentLineStyle]:true,}"
         :style="{
-          left:componentList[currentIndex]['positioning']['left']
+          left:(alignmentLineLeft+'px')
         }">
       </div>
       <div 
-        v-show="~alignment.page.longitudinal.indexOf((Number(componentList[currentIndex]['positioning']['left'].replace(/px/, ''))+Number(componentList[currentIndex]['freeStyle']['width'].replace(/px/, ''))))"
+        v-show="~alignment.page.longitudinal.indexOf(alignmentLineRight)"
         :class="{rightAlignment:true,[alignmentLineStyle]:true,}"
         :style="{
-          left:(Number(componentList[currentIndex]['positioning']['left'].replace(/px/, ''))+Number(componentList[currentIndex]['freeStyle']['width'].replace(/px/, '')))+'px'
+          left:(alignmentLineRight+'px')
         }">
       </div>
     </template>
@@ -152,6 +154,20 @@ export default {
           }
         }
       }
+    },
+  },
+  computed:{
+    alignmentLineTop(){
+      return Number(this.componentList[this.currentIndex]['positioning']['top'].replace(/px/, ''))
+    },
+    alignmentLineBottom(){
+      return (Number(this.componentList[this.currentIndex]['positioning']['top'].replace(/px/, ''))+Number(this.componentList[this.currentIndex]['freeStyle']['height'].replace(/px/, '')))
+    },
+    alignmentLineLeft(){
+      return Number(this.componentList[this.currentIndex]['positioning']['left'].replace(/px/, ''))
+    },
+    alignmentLineRight(){
+      return (Number(this.componentList[this.currentIndex]['positioning']['left'].replace(/px/, ''))+Number(this.componentList[this.currentIndex]['freeStyle']['width'].replace(/px/, '')))
     },
   },
   created() {
