@@ -70,6 +70,7 @@ freePanel.component
 | 基础方法                              | 参数                                        | 方法名字                                           |
 | ---------------------------------- | -------------------------------------- | ---------------------------------------------- |
 | controlPanel.addComponent | name/组件名字，bool/默认false(true为绝对定位) | 添加指定组件 |
+| controlPanel.copyComponent | 复制组件并添加面板 | 复制指定组件 |
 | controlPanel.removeComponent | 默认删除当前选中，id/组件id | 删除指定组件  |
 | controlPanel.setStyle | key/修改的字段，value/修改值 | 修改选中组件的样式 |
 | controlPanel.setData | key/修改的字段，value/修改值 | 修改选中组件的数据 |
@@ -121,11 +122,13 @@ freePanel.component
     <!-- currentStyle  修改当前点击选中组件的高亮样式-->
     <!-- sameGroupStyle  修改当前点击选中组件的同组合组件高亮样式-->
     <!-- haveBeenGrouped  修改选中同组合组件时不可选中的组件样式-->
+    <!-- alignmentLineStyle 组件对齐线样式 -->
     <freePanel 
       :controlPanel="controlPanel">
       currentStyle=""
       sameGroupStyle=""
       haveBeenGrouped=""
+      alignmentLineStyle=""
     </freePanel>
   </div>
 </template>

@@ -1,45 +1,77 @@
 <template>
-  <div
-    id="mainPanelPage"
-    :style="[freeStyle,{
-      transform:'scale('+zoomValue+')'
-    }]"
-    @click.stop="setCurrentControl('mainPanel')"
-    @scroll="scrollHandle">
-    <template v-for="item in componentList">
-      <div
-        :ref="item.id"
-        :key="item.id"
-        :style="[
-          (item.positioning || {}),
-          ({cursor: item.positioning ? 'move' : 'default'}),
-        ]"
-        :class="{
-          basisStyle: true,
-          [currentStyle]: currentId === item.id,
-          [sameGroupStyle]: currentId !== item.id && ~currentGroupMembers.indexOf(item.id),
-          [haveBeenGrouped]: groupState && item.groupMember && ((temporaryGroup && temporaryGroup.groupId) ? item.groupId !== temporaryGroup.groupId : true)
-        }"
-        @click.stop="clickEvent(item)"
-        @dblclick.stop="dblclickEvent(item)">
-        <template v-if="item.positioning && item.freeStyle.height && item.freeStyle.width">
-          <div :ref="'topRightAngle_' + item.id" class="topRightAngle"></div>
-          <div :ref="'topLeftAngle_' + item.id" class="topLeftAngle"></div>
-          <div :ref="'bottomRightAngle_' + item.id" class="bottomRightAngle"></div>
-          <div :ref="'bottomLeftAngle_' + item.id" class="bottomLeftAngle"></div>
-        </template>
-        <div style="pointer-events: none">
-          <component
-            :is="item.name"
-            :id="item.id"
-            :freeStyle="item.freeStyle"
-            :freeData="item.freeData"
-            :freeConfig="item.freeConfig"
-            :positioning="item.positioning"
-            :eventGather="item.eventGather"
-            :bindEvent="item.bindEvent">
-          </component>
+  <div style="position: relative;">
+    <div
+      id="mainPanelPage"
+      :style="[freeStyle,{
+        transform:'scale('+zoomValue+')'
+      }]"
+      @click.stop="setCurrentControl('mainPanel')"
+      @scroll="scrollHandle">
+      <template v-for="item in componentList">
+        <div
+          :id="item.id"
+          :ref="item.id"
+          :key="item.id"
+          :style="[
+            (item.positioning || {}),
+            ({cursor: item.positioning ? 'move' : 'default'}),
+          ]"
+          :class="{
+            basisStyle: true,
+            [currentStyle]: currentId === item.id,
+            [sameGroupStyle]: currentId !== item.id && ~currentGroupMembers.indexOf(item.id),
+            [haveBeenGrouped]: groupState && item.groupMember && ((temporaryGroup && temporaryGroup.groupId) ? item.groupId !== temporaryGroup.groupId : true)
+          }"
+          @click.stop="clickEvent(item)"
+          @dblclick.stop="dblclickEvent(item)">
+          <template v-if="item.positioning && item.freeStyle.height && item.freeStyle.width">
+            <div :ref="'topRightAngle_' + item.id" class="topRightAngle"></div>
+            <div :ref="'topLeftAngle_' + item.id" class="topLeftAngle"></div>
+            <div :ref="'bottomRightAngle_' + item.id" class="bottomRightAngle"></div>
+            <div :ref="'bottomLeftAngle_' + item.id" class="bottomLeftAngle"></div>
+          </template>
+          <div style="pointer-events: none">
+            <component
+              :is="item.name"
+              :id="item.id"
+              :freeStyle="item.freeStyle"
+              :freeData="item.freeData"
+              :freeConfig="item.freeConfig"
+              :positioning="item.positioning">
+            </component>
+          </div>
         </div>
+      </template>
+    </div>
+    <!-- 对齐线 -->
+    <template v-if="currentIndex!==undefined && alignment">
+      <div 
+        v-show="~alignment.page.cross.indexOf(Number(componentList[currentIndex]['positioning']['top'].replace(/px/, '')))"
+        :class="{topAlignment:true,[alignmentLineStyle]:true,}" 
+        :style="{
+          top:componentList[currentIndex]['positioning']['top']
+        }">
+      </div>
+      <div 
+        v-show="~alignment.page.cross.indexOf((Number(componentList[currentIndex]['positioning']['top'].replace(/px/, ''))+Number(componentList[currentIndex]['freeStyle']['height'].replace(/px/, ''))))"
+        :class="{bottomAlignment:true,[alignmentLineStyle]:true,}"
+        :style="{
+          top:(Number(componentList[currentIndex]['positioning']['top'].replace(/px/, ''))+Number(componentList[currentIndex]['freeStyle']['height'].replace(/px/, '')))+'px'
+        }">
+      </div>
+      <div 
+        v-show="~alignment.page.longitudinal.indexOf(Number(componentList[currentIndex]['positioning']['left'].replace(/px/, '')))"
+        :class="{leftAlignment:true,[alignmentLineStyle]:true,}"
+        :style="{
+          left:componentList[currentIndex]['positioning']['left']
+        }">
+      </div>
+      <div 
+        v-show="~alignment.page.longitudinal.indexOf((Number(componentList[currentIndex]['positioning']['left'].replace(/px/, ''))+Number(componentList[currentIndex]['freeStyle']['width'].replace(/px/, ''))))"
+        :class="{rightAlignment:true,[alignmentLineStyle]:true,}"
+        :style="{
+          left:(Number(componentList[currentIndex]['positioning']['left'].replace(/px/, ''))+Number(componentList[currentIndex]['freeStyle']['width'].replace(/px/, '')))+'px'
+        }">
       </div>
     </template>
   </div>
@@ -63,6 +95,10 @@ export default {
       type: String,
       default: "groupMember",
     },
+    alignmentLineStyle: {
+      type: String,
+      default: "alignmentLineStyle",
+    },
   },
   data() {
     return {
@@ -73,18 +109,6 @@ export default {
         height: "812px",
         background: "",
       },
-      // 页面事件集合
-      eventGather: {
-        touchPeak:{
-          name:"页面滑动顶部",
-          fun:escape(`((...paramet)=>{ })`)
-        },
-        touchGround:{
-          name:"页面滑动底部",
-          fun:escape(`((...paramet)=>{ })`)
-        },
-        
-      },
       // 接收当前是否设置分组
       groupState: false,
       // 存放组件列表
@@ -93,8 +117,14 @@ export default {
       temporaryGroup: {},
       // 存放当前操作组件所属分组的成员
       currentGroupMembers: [],
+      // 页面事件集合
+      eventObj:{},
       // 当前选中id
       currentId: "",
+      // 当前选中下标
+      currentIndex: undefined,
+      // 对齐线校准数据
+      alignment:null,
       // 当前内容高度
       scrollHeight: 812,
       // 当前滚动高度
@@ -109,16 +139,16 @@ export default {
     },
     scrollTop(newV) {
       if (newV == 0) {
-        if (this.eventGather["touchPeak"]) {
-          eval(unescape(this.eventGather["touchPeak"]['fun']))();
+        if (this.eventObj.eventGather["mainPanel"]["touchPeak"]) {
+          eval(unescape(this.eventObj.eventGather["mainPanel"]["touchPeak"]['fun']))();
         }
       } else {
         if (
           Number(this.freeStyle.height.replace(/px/, "")) + newV ==
           this.scrollHeight
         ) {
-          if (this.eventGather["touchGround"]) {
-            eval(unescape(this.eventGather["touchGround"]['fun']))();
+          if (this.eventObj.eventGather["mainPanel"]["touchGround"]) {
+            eval(unescape(this.eventObj.eventGather["mainPanel"]["touchGround"]['fun']))();
           }
         }
       }
@@ -127,11 +157,24 @@ export default {
   created() {
     // 监听切换当前选中操作的组件
     this.controlPanel.listeningCurrentSwitch((data) => {
+      this.currentIndex = undefined;
       if (data) {
         this.currentId = data.id;
+        try {
+          this.componentList.forEach((item,index) => {
+            if(this.currentId==item.id){
+              this.currentIndex = index;
+              throw new Error(true);
+            };
+          });
+        } catch (e) {
+          if (!(e.message === "true" || e.message === true)) {
+            console.error(e);
+          };
+        };
       } else {
         this.currentId = "";
-      }
+      };
     });
     // 监听当前选中是否为分组
     this.controlPanel.listeningGroupChange((data, list, temporary) => {
@@ -156,6 +199,10 @@ export default {
         this.currentGroupMembers = Object.keys(temporary.gather);
       }
     });
+    // 监听事件变化
+    this.controlPanel.listeningEventChange((bindEvent,currentEventGather,combined,eventObj)=>{
+      this.eventObj = eventObj;
+    });
     // 监听缩放比例
     this.controlPanel.listeningZoomChange((zoomValue)=>{
       this.zoomValue = zoomValue;
@@ -174,31 +221,25 @@ export default {
     },
     clickEvent(item) {
       this.flag = true;
+      this.setCurrentControl(item.id);
       setTimeout(() => {
         if (this.flag) {
-          this.setCurrentControl(item.id);
-          if (item.bindEvent && item.bindEvent.click) {
-            var e = item.bindEvent.click;
-            if (item.eventGather[e.funcId]) {
-              var func = eval(unescape(item.eventGather[e.funcId]['fun']));
-              func.call(this.controlPanel.useThis(item.id),...(e.paramet instanceof Array ? e.paramet : [e.paramet]));
-            } else if (this.eventGather[e.funcId]) {
-              var func = eval(unescape(this.eventGather[e.funcId]['fun']));
-              func.call(this.controlPanel.useThis(item.id),...(e.paramet instanceof Array ? e.paramet : [e.paramet]));
-            }
-          };
+          this.triggeringEvent("click",item);
         }
       }, 200);
     },
     dblclickEvent(item) {
       this.flag = false;
-      if (item.bindEvent && item.bindEvent.dblclick) {
-        var e = item.bindEvent.dblclick;
-        if (item.eventGather[e.funcId]) {
-          var func = eval(unescape(item.eventGather[e.funcId]['fun']));
+      this.triggeringEvent("dblclick",item);
+    },
+    triggeringEvent(type,item){
+      if (this.eventObj.bindEvent && this.eventObj.bindEvent[item.id] && this.eventObj.bindEvent[item.id][type]) {
+        var e = this.eventObj.bindEvent[item.id][type];
+        if (this.eventObj.eventGather[item.id][e.funcId]) {
+          var func = eval(unescape(this.eventObj.eventGather[item.id][e.funcId]['fun']));
           func.call(this.controlPanel.useThis(item.id),...(e.paramet instanceof Array ? e.paramet : [e.paramet]));
-        } else if (this.eventGather[e.funcId]) {
-          var func = eval(unescape(this.eventGather[e.funcId]['fun']));
+        } else if (this.eventObj.eventGather["mainPanel"][e.funcId]) {
+          var func = eval(unescape(this.eventObj.eventGather["mainPanel"][e.funcId]['fun']));
           func.call(this.controlPanel.useThis(item.id),...(e.paramet instanceof Array ? e.paramet : [e.paramet]));
         }
       }
@@ -272,5 +313,32 @@ export default {
 .bottomLeftAngle {
   bottom: -3px;
   left: -3px;
+}
+.topAlignment,
+.bottomAlignment,
+.leftAlignment,
+.rightAlignment{
+  position: absolute;
+}
+.topAlignment,
+.bottomAlignment{
+  width: 10000px!important;
+  border-left: 0!important;
+  border-right: 0!important;
+  border-bottom: 0!important;
+  left: 50%;
+  transform: translateX(-50%);
+}
+.leftAlignment,
+.rightAlignment{
+  height: 10000px!important;
+  border-right: 0!important;
+  border-top: 0!important;
+  border-bottom: 0!important;
+  top: 50%;
+  transform: translateY(-50%);
+}
+.alignmentLineStyle{
+  border: 1px dashed #05d2f4;
 }
 </style>
