@@ -16,7 +16,7 @@
   
   ![demo图片](https://github.com/aXin-0810/vue-page-free-build/blob/master/16100132276571.jpg)
 
-  ![demo图片](https://github.com/aXin-0810/vue-page-free-build/blob/master/16100132276573.jpg)
+  ![demo图片](https://github.com/aXin-0810/vue-page-free-build/blob/master/WechatIMG217.jpg)
 
 ## 第一步 安装依赖
 ```javascript
