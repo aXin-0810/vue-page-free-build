@@ -323,6 +323,7 @@ export default {
 .leftAlignment,
 .rightAlignment{
   position: absolute;
+  z-index: 999999;
 }
 .topAlignment,
 .bottomAlignment{
