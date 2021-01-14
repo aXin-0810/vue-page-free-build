@@ -140,7 +140,6 @@ export default {
       this.scrollHeight = Number(newV.replace(/px/, "")) + this.scrollTop;
     },
     scrollTop(newV) {
-      console.log(this.eventObj.eventGather["mainPanel"]);
       if (newV == 0) {
         if (this.eventObj.eventGather["mainPanel"]["touchPeak"]) {
           eval(unescape(this.eventObj.eventGather["mainPanel"]["touchPeak"]['fun']))();
@@ -204,7 +203,6 @@ export default {
     });
     // 监听事件变化
     this.controlPanel.listeningEventChange((bindEvent,currentEventGather,combined,eventObj)=>{
-      console.log(eventObj);
       this.eventObj = eventObj;
     });
     // 监听缩放比例
