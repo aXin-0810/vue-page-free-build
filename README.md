@@ -16,7 +16,7 @@
   
   ![demo图片](https://github.com/aXin-0810/vue-page-free-build/blob/master/16100132276571.jpg)
 
-  ![demo图片](https://github.com/aXin-0810/vue-page-free-build/blob/master/3dbe180f2e37f2cd7.jpg)
+  ![demo图片](https://github.com/aXin-0810/vue-page-free-build/blob/master/db9a8391c.jpg)
 
 ## 第一步 安装依赖
 ```javascript
@@ -78,9 +78,7 @@ freePanel.component
 | controlPanel.setConfig | key/修改的字段，value/修改值 | 设置更多配置数据 |
 | controlPanel.setCurrentControl | id/组件id | 点击组件时设置当前可以操控的组件 |
 | controlPanel.setZoomValue | number/缩放值 | 设置当前面板缩放级别 |
-| controlPanel.listeningCurrentSwitch | callback/回调函数 | 监听当前操作组件切换变化 |
-| controlPanel.listeningCurrentChange | callback/回调函数 | 监听当前操作记录|
-| controlPanel.listeningZoomChange | callback/回调函数 | 监听面板缩放 |
+| controlPanel.setHidden | bool/布尔值，id/组件id（不传默认选中） | 设置组件隐藏 |
 | controlPanel.rollBack | 无 | 返回上一步操作 |
 | controlPanel.nextStep | 无 | 前进一步操作|
 | controlPanel.echoComponent | list/列表数据  | 回显页面 |
@@ -95,7 +93,6 @@ freePanel.component
 | controlPanel.setGroup|groupId/组id|开启修改分组成员|
 | controlPanel.determineGroup|无|在开启设置分组后，确定当前分组成员的修改|
 | controlPanel.getGroup|groupId/组id|获取分组数据|
-| controlPanel.listeningGroupChange|callback/回调函数|监听分组数据的变化|
 | controlPanel.setGroupMemberName|groupId/组id，label/名字|设置分组名字|
 | controlPanel.setGroupName|groupId/组id，id/组件id，label/名字|设置组件名字|
 
@@ -110,8 +107,16 @@ freePanel.component
 | controlPanel.removeComponentEvent|funcId/方法id|删除组件事件功能|
 | controlPanel.bindComponentEvent|way/事件类型， funcId/方法id， paramet/携带参数|给当前选中组件绑定事件函数 |
 | controlPanel.removeBindComponentEvent|way/事件类型|给当前选中组件解除绑定事件|
-| controlPanel.listeningEventChange|callback/回调函数|监听事件函数的变化，与绑定事件的变化|
 
+
+| 监听事件                              | 参数                                        | 方法名字                                           |
+| ----------------------------------- | ------------------------------------- | --------------------------------------------- |
+| controlPanel.listeningCurrentSwitch | callback/回调函数 | 监听当前操作组件切换变化 |
+| controlPanel.listeningCurrentChange | callback/回调函数 | 监听当前操作记录|
+| controlPanel.listeningZoomChange | callback/回调函数 | 监听面板缩放 |
+| controlPanel.listeningGroupChange|callback/回调函数|监听分组数据的变化|
+| controlPanel.listeningEventChange|callback/回调函数|监听事件函数的变化，与绑定事件的变化|
+| controlPanel.listeningComponentListChange|callback/回调函数|监听组件列表变化|
 
 ## 第三步 在vue中引用控办组件
 ```javascript
@@ -206,4 +211,4 @@ export default {
 
 ## 更新时间
 
-  * 2021-1-7 （levy）
+  * 2021-1-16 （levy）
