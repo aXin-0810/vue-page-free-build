@@ -16,10 +16,11 @@
           :key="item.id"
           :style="[
             (item.positioning || {}),
-            ({cursor: item.positioning ? 'move' : 'default'}),
+            ({cursor: item.positioning ? 'move' : 'default'})
           ]"
           :class="{
             basisStyle: true,
+            hiddenComponent: item.hidden,
             [currentStyle]: currentId === item.id,
             [sameGroupStyle]: currentId !== item.id && ~currentGroupMembers.indexOf(item.id),
             [haveBeenGrouped]: groupState && item.groupMember && ((temporaryGroup && temporaryGroup.groupId) ? item.groupId !== temporaryGroup.groupId : true)
@@ -48,32 +49,24 @@
     <!-- 对齐线 -->
     <template v-if="currentIndex!==undefined && alignment">
       <div 
-        v-show="~alignment.page.cross.indexOf(Math.round(Number(componentList[currentIndex]['positioning']['top'].replace(/px/, ''))*zoomValue))"
+        v-show="~alignment.page.cross.indexOf(Math.round(alignmentTop*zoomValue))"
         :class="{topAlignment:true,[alignmentLineStyle]:true,}" 
-        :style="{
-          top:(Number(componentList[currentIndex]['positioning']['top'].replace(/px/, ''))-scrollTop+'px')
-        }">
+        :style="{top:(alignmentTop-scrollTop+'px')}">
       </div>
       <div 
-        v-show="~alignment.page.cross.indexOf(Math.round((Number(componentList[currentIndex]['positioning']['top'].replace(/px/, ''))+Number(componentList[currentIndex]['freeStyle']['height'].replace(/px/, '')))*zoomValue))"
+        v-show="~alignment.page.cross.indexOf(Math.round((alignmentTop+alignmentHeight)*zoomValue))"
         :class="{bottomAlignment:true,[alignmentLineStyle]:true,}"
-        :style="{
-          top:(Math.round(Number(componentList[currentIndex]['positioning']['top'].replace(/px/, ''))+Number(componentList[currentIndex]['freeStyle']['height'].replace(/px/, ''))-scrollTop)+'px')
-        }">
+        :style="{top:(Math.round(alignmentTop+alignmentHeight-scrollTop)+'px')}">
       </div>
       <div 
-        v-show="~alignment.page.longitudinal.indexOf(Math.round(Number(componentList[currentIndex]['positioning']['left'].replace(/px/, ''))*zoomValue))"
+        v-show="~alignment.page.longitudinal.indexOf(Math.round(alignmentLet*zoomValue))"
         :class="{leftAlignment:true,[alignmentLineStyle]:true,}"
-        :style="{
-          left:(Number(componentList[currentIndex]['positioning']['left'].replace(/px/, ''))+'px')
-        }">
+        :style="{left:(alignmentLet+'px')}">
       </div>
       <div 
-        v-show="~alignment.page.longitudinal.indexOf(Math.round((Number(componentList[currentIndex]['positioning']['left'].replace(/px/, ''))+Number(componentList[currentIndex]['freeStyle']['width'].replace(/px/, '')))*zoomValue))"
+        v-show="~alignment.page.longitudinal.indexOf(Math.round((alignmentLet+alignmentWidth)*zoomValue))"
         :class="{rightAlignment:true,[alignmentLineStyle]:true,}"
-        :style="{
-          left:(Math.round(Number(componentList[currentIndex]['positioning']['left'].replace(/px/, ''))+Number(componentList[currentIndex]['freeStyle']['width'].replace(/px/, '')))+'px')
-        }">
+        :style="{left:(Math.round(alignmentLet+alignmentWidth)+'px')}">
       </div>
     </template>
   </div>
@@ -134,6 +127,20 @@ export default {
       // 面板缩放值
       zoomValue:1
     };
+  },
+  computed:{
+    alignmentTop(){
+      return Number(this.componentList[this.currentIndex]['positioning']['top'].replace(/px/, ''))
+    },
+    alignmentLet(){
+      return Number(this.componentList[this.currentIndex]['positioning']['left'].replace(/px/, ''))
+    },
+    alignmentHeight(){
+      return Number(this.componentList[this.currentIndex]['freeStyle']['height'].replace(/px/, ''))
+    },
+    alignmentWidth(){
+      return Number(this.componentList[this.currentIndex]['freeStyle']['width'].replace(/px/, ''))
+    }
   },
   watch: {
     "freeStyle.height"(newV) {
@@ -289,6 +296,10 @@ export default {
 }
 .groupMember {
   opacity: 0.3;
+}
+.hiddenComponent{
+  pointer-events: none!important;
+  opacity: 0!important;
 }
 .topRightAngle ,
 .topLeftAngle ,
