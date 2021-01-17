@@ -244,7 +244,7 @@ export default {
     triggeringEvent(type,item){
       if (this.eventObj.bindEvent && this.eventObj.bindEvent[item.id] && this.eventObj.bindEvent[item.id][type]) {
         var e = this.eventObj.bindEvent[item.id][type];
-        if (this.eventObj.eventGather[item.id][e.funcId]) {
+        if (this.eventObj.eventGather[item.id] && this.eventObj.eventGather[item.id][e.funcId]) {
           var func = eval(unescape(this.eventObj.eventGather[item.id][e.funcId]['fun']));
           func.call(this.controlPanel.useThis(item.id),...(e.paramet instanceof Array ? e.paramet : [e.paramet]));
         } else if (this.eventObj.eventGather["mainPanel"][e.funcId]) {
